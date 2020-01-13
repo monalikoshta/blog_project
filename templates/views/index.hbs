@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+	<link rel="stylesheet" type="text/css" href="css/home-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<div class="heading">{{heading}}</div>
+		<p class="navlink">
+			<a href="/login">Login</a>&nbsp|&nbsp<a href="/signup">SignUp</a>
+		</p>
+	</div>
+
+	<p id="pagelink1">
+		
+	</p>
+
+	<div id="box">
+		
+	</div>
+	
+	<p id="pagelink2">
+		
+	</p>
+	
+	<script>
+		window.localStorage.clear();
+		function display_content(){
+			const user_id = window.localStorage.getItem('user_id')
+			var data={
+				user_id,
+			}
+			fetch('http://localhost:3000/index-post-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					var text="";
+					const count = data.response
+					
+					if(count>10){
+						var total_page = Math.floor((count/10)+1)
+						var num="";
+						for(var p=1;p<=total_page;p++){
+							num = num + '<button type="button" class="b" onclick="changedata('+p+')" id="b-"'+p+'>'+p+'</button>'
+						}
+						document.getElementById('pagelink1').innerHTML = num
+						document.getElementById('pagelink2').innerHTML = num
+					}
+
+				})
+			})
+		}
+		display_content()
+
+		function changedata(p){
+			var offset = 10*(p-1);
+			var data={
+				offset
+			}
+			fetch('http://localhost:3000/index-offset-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					var text="";
+					//const count = data.response.length
+					var imgpath =[]
+					var count= data.response.length
+					if (count<10)
+						var end =0;
+					else
+						var end = count-10;
+					for(var i=0;i<count;i++){
+						if(data.response[i].img)
+							imgpath[i] = "uploads/posts/"+ data.response[i].img
+						else
+							imgpath[i] ="img/download.png"
+						text = text + "<div class='post clearfix'>"+
+								"<div class='image'><img  class='dp' id='img-"+i+"' src='"+imgpath[i]+"'></div>"+
+									"<div class='content'>"+
+										"<h1 class='title' id='title-"+i+"'>"+data.response[i].title.toUpperCase()+"</h1>"+
+										"<h4 class='title' id='author-"+i+"'>"+"</h4>"+
+										"<p id='res'>"+data.response[i].description.substr(0,200)+"...</p>"+
+										"<button type='button' class='btn' id='btn-"+i+"' onclick='full_post("+data.response[i].post_id+")'><a href='/single-post'>Read More</a></button>"+
+									"</div>"+
+								"</div>"
+					// data.response[i].title
+
+					}
+					document.getElementById("box").innerHTML = text
+				})
+			})
+		}
+		changedata(1)
+		function full_post(i){
+			window.localStorage.setItem("post_id",i)
+		}
+	</script>
+</body>
+</html>

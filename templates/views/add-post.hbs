@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ADD POST</title>
+	<link rel="stylesheet" type="text/css" href="css/login-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/">Logout </a>
+		</p>
+	</div>
+	<form class="box" style="padding: 25px 80px;">
+		Title:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type="text" name="title" id="title"><br>
+		Image:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type="file" name="postImage" id="postImage" onchange="toBase64(this.files[0])"><br>
+		<input type="hidden" name="postdp" id="postdp">
+		Description: <textarea rows="10" cols="40" name="descrip" id="descrip"></textarea><br>
+		<button type="button" onclick="postBlog()">Submit</button>&nbsp&nbsp&nbsp&nbsp
+		<button type="button"><a href="/dashboard" style="color: white; text-decoration: none;">Go to dashboard</a></button>
+	</form>
+	<script>
+
+		var file=null;
+
+		function toBase64(file) {
+		   var reader = new FileReader();
+		   reader.readAsDataURL(file);
+		   reader.onload = function () {
+		     file=reader.result
+		     document.getElementById("postdp").value = file;
+		     //alert(document.getElementById("postdp").value)
+		   };
+		}
+
+		function postBlog(){
+			const user_id = window.localStorage.getItem('user_id')
+			if(!user_id)
+				return location.replace('/login')
+			const title = document.getElementById('title').value
+			const postImage = document.getElementById('postdp').value
+			const descrip = document.getElementById('descrip').value
+
+			var data={
+			 	title,
+			 	postImage,
+			 	descrip,
+			 	user_id
+			 }
+					
+			if(!user_id || !title || !postImage || !descrip)
+				alert("please fill in all the fields")
+			else{
+				fetch('http://localhost:3000/add-post-page',{
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						'Accept': 'application/json',
+			            'Content-Type': 'application/json',
+			            // 'Content-Type': 'application/x-www-form-urlencoded',
+			        },
+				}).then((response)=>{
+					response.json().then((data)=>{
+						// console.log(data)
+						// console.log(response)
+						// alert("1");
+						// alert(data.response)
+						// alert("2")
+						if(data.error)
+							return alert("error!")
+						if(data.response){
+							alert("Successfully Posted!")
+							location.replace("/dashboard")
+						}
+					})
+				}).catch((error)=>{
+					alert("error catch!"+ error)
+				})
+			}
+			
+		}
+	</script>
+</body>
+</html>

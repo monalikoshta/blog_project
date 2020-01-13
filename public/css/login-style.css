@@ -1,0 +1,53 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	font-family: 'arial';
+}
+body{
+	background-image: url("../img/it-solutions-banner.jpg");
+	background-repeat: no-repeat;
+	background-position: cover;
+	background-attachment: fixed;
+}
+button{
+	background-color: #042157;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+    margin: 10px 0px;
+}
+button:hover{
+	-webkit-box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+-moz-box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+}
+.header{
+	background-color: #ffffffc7;
+	color: #042157;
+	margin: 25px 0px;
+	text-align: center;
+	padding: 20px;
+}
+.heading{
+	font-size: 50pt;
+}
+.navlink a{
+	color: #042157;
+	text-decoration: none;
+}
+.box{
+	background-color: #ffffffc7;
+	margin: 2% 32%;
+	padding: 25px 60px;
+	text-align: left;
+}
+span{
+	color: red;
+}
+input{
+	margin: 10px;
+}
+textarea{
+	margin: 10px;
+}

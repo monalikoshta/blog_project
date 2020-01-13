@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{heading}}</title>
+	<link rel="stylesheet" type="text/css" href="css/dashboard-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/"> Logout </a>
+		</p>
+	</div>
+	<div class="container1">
+		<div class="menu">
+			<ul>
+				<h4><li id='name'></li></h4>
+				<li><a href="/dashboard">Dashboard</a></li>
+				<li><a href="/view-profile">View Profile</a></li>
+				<li><a href="/edit-profile">Edit Profile</a></li>
+				<li><a href="/all-post">All Posts</a></li>
+				<li class="drop">
+					<a href="/dashboard">Setting</a>
+					<ul class="sub-menu">
+						<li><a href="/delete" id="del">&nbsp&nbsp&nbsp&nbspDelete Account</a></li>
+					</ul>
+				</li>
+				<li><a href="/add-post">Add New Post</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container">
+		<div id="pagelink1">
+	
+		</div>
+		<div class="container2">
+			<div id="box">
+				
+			</div>
+		</div>
+		<div id="pagelink2" class="downlink">
+		
+		</div>
+	</div>
+	<script>
+		function display_name(){
+			const user_id = window.localStorage.getItem('user_id')
+			var data={
+				user_id
+			}
+			fetch('http://localhost:3000/dashboard-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					document.getElementById('name').innerHTML= "Hello "+ data.name.toUpperCase()
+				}).catch((error)=>{
+					location.replace('/login')
+				})
+			})
+		}
+		display_name()
+
+		function display_content(){
+			const user_id = window.localStorage.getItem('user_id')
+			var data={
+				user_id
+			}
+			fetch('http://localhost:3000/post-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					//alert(data.response)
+					var count = data.response
+					if(data.response==0){
+						var text= "<div class='post' style='text-align: center;'>There are no posts yet</div>";
+						//alert(text);
+						document.getElementById("box").innerHTML = text;
+					}
+					if(data.response > 10){
+						var total_page = Math.floor((count/10)+1)
+						var num="";
+						for(var p=1;p<=total_page;p++){
+							num = num + '<button type="button" class="b" onclick="changedata('+p+')" id="b-"'+p+'>'+p+'</button>'
+						}
+						document.getElementById('pagelink1').innerHTML = num
+						document.getElementById('pagelink2').innerHTML = num
+					}
+				})
+			})
+		}
+		display_content()
+
+		function changedata(p){
+			const user_id = window.localStorage.getItem('user_id');
+			var offset = 10*(p-1);
+			var data={
+				user_id,
+				offset
+			}
+			fetch('http://localhost:3000/all-post-offset-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert(data.error)
+					var text="";
+					var imgpath =[]
+					var count= data.response.length;
+					if (count<10)
+						var end =0;
+					else
+						var end = count-10;
+					for(var i=0;i<count;i++){
+						if(data.response[i].img)
+							imgpath[i] = "uploads/posts/"+ data.response[i].img
+						else
+							imgpath[i] ="img/download.png"
+						text = text + "<div class='post clearfix'>"+
+								"<div class='image'><img  class='dp' id='img-"+i+"' src='"+imgpath[i]+"'></div>"+
+									"<div class='content'>"+
+										"<h1 class='title' id='title-"+i+"'>"+data.response[i].title.toUpperCase()+"</h1>"+
+										"<h4 class='title' id='author-"+i+"'>"+"</h4>"+
+										"<p>"+data.response[i].description.substr(0,200)+"...</p>"+
+										"<button type='button' class='btn' onclick='full_post("+data.response[i].post_id+")'><a href='/read-post'>Read More</a></button>"+
+									"</div>"+
+								"</div>"
+						//alert(data.response[i].post_id)
+						}
+						document.getElementById("box").innerHTML = text
+				}).catch((error)=>{
+					alert(error)
+				})
+			})
+		}
+		changedata(1)
+		function full_post(i){
+			window.localStorage.setItem("post_id",i)
+		}
+	</script>
+</body>
+</html>

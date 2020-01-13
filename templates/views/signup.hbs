@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{haeding}}</title>
+	<link rel="stylesheet" type="text/css" href="css/login-style.css">
+	<script type="text/javascript" src="js/signup-script.js"></script>
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/login">Already registered</a>&nbsp|&nbsp<a href="/">Home</a>
+		</p>
+	</div>
+	<form class="box" method="post">
+		Full Name<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="name"id="name"><br>
+		Email<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="email" name="emailid" id="emailid"><br>
+		Password<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="password" name="pswd" id="pswd"><br>
+		Confirm Password<span>*</span>:<input type="password" name="cnfpswd" id="cnfpswd"><br>
+		Gender<span>*</span>: &nbsp&nbsp<input type="radio" name="gender" id="male" value="Male">Male
+				<input type="radio" name="gender" id="female" value="Female">Female
+				<input type="radio" name="gender" id="other" value="Other">Other<br>
+		Date of Birth<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="date" name="dob" id="dob"><br>
+		Profile Image:<input type="file" name="profileImage" id="profileImage" onchange="toBase64(this.files[0])"><br>
+		<input type="hidden" name="dp" id="dp">
+		<button type="button" onclick="getdata()">Submit</button>
+	</form>
+</body>
+</html>

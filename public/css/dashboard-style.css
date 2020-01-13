@@ -1,0 +1,117 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	font-family: 'arial';
+}
+body{
+	background-image: url("../img/it-solutions-banner.jpg");
+	background-repeat: no-repeat;
+	background-position: cover;
+	background-attachment: fixed;
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+button{
+	background-color: #042157;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+    margin: 10px 0px;
+}
+button:hover{
+	-webkit-box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+	-moz-box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+	box-shadow: 10px 10px 21px -4px rgba(0,0,0,0.62);
+}
+.btn a{
+	text-decoration: none;
+	color: white;
+}
+.header{
+	background-color: #ffffffc7;
+	color: #042157;
+	margin: 25px 0px;
+	text-align: center;
+	padding: 20px;
+}
+.heading{
+	font-size: 50pt;
+}
+.navlink a{
+	color: #042157;
+	text-decoration: none;
+}
+.container1{
+	background-color: #ffffffc7;
+	margin: 2%;
+	width: 20%;
+	padding: 25px;
+	text-align: left;
+	float: left;
+}
+.menu{
+	display: relative;
+}
+.sub-menu{
+	display: none;
+}
+.drop:hover .sub-menu{
+	display: block;
+	position: relative;
+}
+li{
+	list-style: none;
+}
+li a{
+	color: #042157;
+	text-decoration: none;
+}
+.container{
+	float: left;
+	width:68%;
+}
+.container2{
+	float: left;	
+}
+.post{
+	background-color: #ffffffc7;
+	margin: 3%;
+	width: 800px;
+	padding: 25px;
+	text-align: left;
+}
+.image{
+	float: left;
+}
+.dp{
+	height: 200px;
+	width: 200px;
+}
+.content{
+	float: right;
+	text-align: right;
+	padding-left: 30px;
+    width: 570px;
+}
+span{
+	color: red;
+}
+input{
+	margin: 10px;
+}
+#pagelink2,#pagelink1{
+	text-align: center;
+	margin-bottom: 0px;
+}
+.b{
+	background-color: white;
+	color: #042157;
+	margin: 5px;
+}

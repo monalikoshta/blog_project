@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{heading}}</title>
+	<link rel="stylesheet" type="text/css" href="css/dashboard-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+	<script type="text/javascript" src="js/edit-script.js"></script>
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/"> Log Out </a>
+		</p>
+	</div>
+	<div class="container1">
+		<div class="menu">
+			<ul>
+				<h4><li id='name'></li></h4>
+				<li><a href="/dashboard">Dashboard</a></li>
+				<li><a href="/view-profile">View Profile</a></li>
+				<li><a href="/edit-profile">Edit Profile</a></li>
+				<li><a href="/all-post">All Posts</a></li>
+				<li class="drop">
+					<a href="/dashboard">Setting</a>
+					<ul class="sub-menu">
+						<li><a href="/delete">&nbsp&nbsp&nbsp&nbspDelete Account</a></li>
+					</ul>
+				</li>
+				<li><a href="/add-post">Add New Post</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container2">
+		<div class="post clearfix">
+			<div class="image"><img class="dp" id="img" src="img/download.png"></div>
+			<div class="content">
+				<form class="box" style="text-align: left; margin-left: 50px;">
+					Full Name<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input 		type='text' name='full_name' id='full_name'><br>
+					Email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type='email' name='emailid' id='emailid' readonly><br>
+					Password<span>*</span>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='password' name='pswd' id='pswd'><br>
+					Confirm Password<span>*</span>:&nbsp&nbsp&nbsp<input type='password' name='cnfpswd' id='cnfpswd'><br>
+					Gender<span>*</span>: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						<input type='radio' name='gender' id='male' value='Male'>Male
+						<input type='radio' name='gender' id='female' value='Female'>Female
+						<input type='radio' name='gender' id='other' value='Other'>Other<br>
+					Date of Birth<span>*</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='date' name='dob' id='dob' value=''><br>
+					Profile Image:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='file' name='profileImage' id='profileImage' onchange="toBase64(this.files[0])"><br>
+					<input type='hidden' name='dp' id='dp'>
+					<button type="button" onclick="getdata()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

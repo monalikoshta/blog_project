@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{heading}}</title>
+	<link rel="stylesheet" type="text/css" href="css/dashboard-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/"> Log Out </a>
+		</p>
+	</div>
+	<div class="container1">
+		<div class="menu">
+			<ul>
+				<h4><li id='name'></li></h4>
+				<li><a href="/dashboard">Dashboard</a></li>
+				<li><a href="/view-profile">View Profile</a></li>
+				<li><a href="/edit-profile">Edit Profile</a></li>
+				<li><a href="/all-post">All Posts</a></li>
+				<li class="drop">
+					<a href="/dashboard">Setting</a>
+					<ul class="sub-menu">
+						<li><a href="/delete">&nbsp&nbsp&nbsp&nbspDelete Account</a></li>
+					</ul>
+				</li>
+				<li><a href="/add-post">Add New Post</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container2">
+		<div class="post clearfix" style="padding: 6px; width: 837px;">
+			<div>
+				<p id="del" style="text-align: center;">
+					Are you sure? &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+					<button type="button" onclick="delAccount()">Yes</button>&nbsp&nbsp&nbsp&nbsp
+					<button type="button"><a href="/dashboard" style="color: white; text-decoration: none;">No</a></button>
+				</p>
+			</div>
+		</div>
+		<div class="post clearfix">
+			<div class="image"><img class="dp" id="img" src="img/download.png"></div>
+			<div class="content">
+				<h1 class="title" id="heading">Name</h1>
+				<h3 class="title" id="sub-heading">no.of posts</h3>
+				<p id="info">Description of the post. this is some text. this is dome text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text. this is some text.</p>
+			</div>
+		</div>
+	</div>
+	<script>
+
+		function delAccount(){
+			const user_id = window.localStorage.getItem('user_id')
+			var data={
+				user_id
+			}
+			fetch('http://localhost:3000/delete-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					alert("Account Deleted Successfully!")
+					location.replace("/signup")
+				}).catch((error)=>{
+					alert(error)
+				})
+			})
+		}
+
+		function display_name(){
+			const user_id = window.localStorage.getItem('user_id')
+			if(!user_id)
+				return location.replace('/login')
+			var data={
+				user_id
+			}
+			fetch('http://localhost:3000/dashboard-page',{
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+		            'Content-Type': 'application/json',
+		            // 'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+			}).then((response)=>{
+				response.json().then((data)=>{
+					if(data.error)
+						return alert("Error!")
+					if(data.profileImage)
+						document.getElementById('img').src= "../uploads/users/"+ data.profileImage;
+					document.getElementById('name').innerHTML= "Hello "+ data.name.toUpperCase()
+					document.getElementById('heading').innerHTML = "Name: "+data.name.toUpperCase()
+					document.getElementById("sub-heading").innerHTML = "No. of posts: "+ data.postcount
+					document.getElementById('info').innerHTML = "<br><p><b>Email:</b> "+data.email+"</p><br> <p><b>Gender:</b> " +data.gender.toUpperCase()+ "</p><br> <p><b>Date Of Birth:</b> "+data.dob.slice(0,10)+"</p>"
+
+				})
+			})
+		}
+		display_name()
+	</script>
+</body>
+</html>

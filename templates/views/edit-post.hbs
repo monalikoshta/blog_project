@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EDIT POST</title>
+	<link rel="stylesheet" type="text/css" href="css/login-style.css">
+	<link rel="icon" href="img/7fcde34b8b.png">
+</head>
+<body>
+	<div class="header">
+		<h1 class="heading">{{heading}}</h1>
+		<p class="navlink">
+			<a href="/dashboard">Dashboard </a>
+		</p>
+	</div>
+	<form class="box" style="padding: 25px 80px;">
+		Title:<span>*</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type="text" name="title" id="title"><br>
+		Image:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type="file" name="postImage" id="postImage" onchange="toBase64(this.files[0])"><br>
+		<input type="hidden" name="postdp" id="postdp">
+		Description:<span>*</span> <textarea rows="10" cols="40" name="descrip" id="descrip"></textarea><br>
+		<button type="button" onclick="edit_post()">Submit</button>&nbsp&nbsp&nbsp&nbsp
+		<button type="button"><a href="/dashboard" style="color: white; text-decoration: none;">Go to dashboard</a></button>
+	</form>
+	<script>
+		function display_post(){
+			const user_id= window.localStorage.getItem('user_id')
+			if(!user_id)
+				location.replace('/login')
+			const post_id= window.localStorage.getItem('post_id')
+			var data={
+				user_id,
+				post_id
+			}
+			fetch('http://localhost:3000/display-data-page',{
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						'Accept': 'application/json',
+			            'Content-Type': 'application/json',
+			            // 'Content-Type': 'application/x-www-form-urlencoded',
+			        },
+				}).then((response)=>{
+					response.json().then((data)=>{
+						document.getElementById("title").value = data.response[0].title;
+						document.getElementById("descrip").value = data.response[0].description;
+
+					})
+				})
+
+		}
+		display_post()
+		function edit_post(){
+			const title = document.getElementById('title').value
+			const descrip = document.getElementById("descrip").value
+			const postImage = document.getElementById('postdp').value
+			if(!title || !descrip){
+				alert("Fields marked with '*' are required")
+			}
+			else{
+				const user_id = window.localStorage.getItem('user_id')
+				const post_id = window.localStorage.getItem('post_id')
+				//console.log(user_id)
+				//console.log(post_id)
+				var data={
+					title,
+					descrip,
+					postImage,
+					post_id,
+					user_id
+				}
+				fetch('http://localhost:3000/edit-post-page',{
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						'Accept': 'application/json',
+			            'Content-Type': 'application/json',
+			            // 'Content-Type': 'application/x-www-form-urlencoded',
+			        },
+				}).then((response)=>{
+					response.json().then((data)=>{
+						//alert("from then "+data)
+						if(data.error)
+							return alert ("eror: "+data.error)
+						if(data.response){
+							alert("Your post has been updated!")
+							location.replace("/dashboard")
+						}
+					})
+				}).catch((error)=>{
+					alert("from here "+error)
+				})
+			}
+		}
+		var file=null;
+
+		function toBase64(file) {
+		   var reader = new FileReader();
+		   reader.readAsDataURL(file);
+		   reader.onload = function () {
+		     file=reader.result
+		     //console.log(file);
+		     document.getElementById("postdp").value = file;
+		     alert(document.getElementById("postdp").value)
+		   };
+		}
+	</script>
+</body>
+</html>
